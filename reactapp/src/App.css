@@ -1,0 +1,23 @@
+.App {
+  text-align: center;
+}
+
+.container{
+  padding:2rem !important
+}
+
+.mb-2{
+  margin-bottom:3rem !important
+}
+
+.tableHeader{
+  font-weight:bold
+}
+
+.table-container{
+  position:absolute;
+  top: 50%;
+  left:50%;
+  transform:translate(-50%, -50%)
+}
+
