@@ -3,18 +3,12 @@ import axios from 'axios'
 
 import {Link} from 'react-router-dom'
 
-
 const endpoint = 'http://localhost:8000/api'
 
 const ShowClient = () => {
 
     const [clients, setClients] = useState([])
     const [loading,setLoading] = useState(true)
-    const [nom, setNom] = useState("")
-    const [prenom, setPrenom] = useState("")
-    const [adresse, setAdresse] = useState("")
-    const [telephone, setTelephone] = useState("")
-    const [mail, setMail] = useState("")
 
     useEffect( () =>{
         getAllClients()
@@ -27,6 +21,81 @@ const ShowClient = () => {
             setClients(res.data.data);
             setLoading(false)
         })
+    }
+
+    const createClient = () => {
+
+        const [nom, setNom] = useState("")
+        const [prenom, setPrenom] = useState("")
+        const [adresse, setAdresse] = useState("")
+        const [telephone, setTelephone] = useState("")
+        const [mail, setMail] = useState("")
+    
+        const store = async (e) => {
+            e.preventDefault()
+            await axios.post(`${endpoint}/clients`)
+            .then(res=>(
+                setNom(res.data.data.nom),
+                setPrenom(res.data.data.prenom),
+                setAdresse(res.data.data.adresse),
+                setTelephone(res.data.data.telephone),
+                setMail(res.data.data.mail)
+            ))
+        }
+    
+        return (
+            <div>
+                <h3>CreateClient</h3>
+                <form onSubmit={store}>
+                    <div className='mb-3'>
+                        <label className='form-label'></label>
+                        <input 
+                            value={nom}
+                            onChange={ (e)=> setNom(e.target.value)}
+                            type="text"
+                            className='form-control'
+                        />
+                    </div>
+                    <div className='mb-3'>
+                        <label className='form-label'></label>
+                        <input 
+                            value={prenom}
+                            onChange={ (e)=> setPrenom(e.target.value)}
+                            type="text"
+                            className='form-control'
+                        />
+                    </div>
+                    <div className='mb-3'>
+                        <label className='form-label'></label>
+                        <input 
+                            value={adresse}
+                            onChange={ (e)=> setAdresse(e.target.value)}
+                            type="text"
+                            className='form-control'
+                        />
+                    </div>
+                    <div className='mb-3'>
+                        <label className='form-label'></label>
+                        <input 
+                            value={telephone}
+                            onChange={ (e)=> setTelephone(e.target.value)}
+                            type="text"
+                            className='form-control'
+                        />
+                    </div>
+                    <div className='mb-3'>
+                        <label className='form-label'></label>
+                        <input 
+                            value={mail}
+                            onChange={ (e)=> setMail(e.target.value)}
+                            type="text"
+                            className='form-control'
+                        />
+                    </div>
+                    <button type='submit' className='btn btn-primary'>Store</button>
+                </form>
+            </div>
+        )
     }
     
     const updateClient = async (e) => {
@@ -41,7 +110,6 @@ const ShowClient = () => {
         })
     }
 
-
     const deleteClient = async (id) => {
         await axios.delete(`${endpoint}/clients/delete/${id}`)
         .then(res=>{
@@ -51,7 +119,7 @@ const ShowClient = () => {
 
     const clientsListe = () => {
         return loading ? <div>Chargement</div> : (<div className="container table-container">
-            <button className="btn btn-primary mb-2 mt-2">Créer un client</button>
+            <button className="btn btn-primary mb-2 mt-2" onClick={()=>createClient(client.id)}>Créer un client</button>
             <table className="table table-responsive table-striped table-bordered">
                 <thead>
                 <tr className="tableHeader">
