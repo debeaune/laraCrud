@@ -1,47 +1,45 @@
-/*import axios from 'axios';
+import axios from 'axios';
 import React, {useState, useEffect} from "react";
-import {useNavigate, useParams} from 'react-router-dom';
+import "./EditClient.css";
 
-const endpoint = 'http://localhost:8000/api/client'
+const endpoint = 'http://localhost:8000/api'
 
-const EditClient = () => {
+const EditClient = ({clientId}) => {
 
     const [nom, setNom] = useState("")
     const [prenom, setPrenom] = useState("")
     const [adresse, setAdresse] = useState("")
     const [telephone, setTelephone] = useState("")
     const [mail, setMail] = useState("")
-    const navigate = useNavigate()
-    const {id} = useParams()
 
-    const update = async (e) => {
+    const updateClient =  (e,clientId) => {
         e.preventDefault()
-        await axios.put(`${endpoint}${id}`, {
+            const updatedClient = {
             nom:nom,
             prenom:prenom,
             adresse:adresse,
             telephone:telephone,
             mail:mail
-        })
-        navigate('/')
+        }
+        updateClient(clientId,updatedClient) 
     }
 
     useEffect( () => {
-        const getClientById = async () => {
-            const response = await axios.get(`${endpoint}${id}`)
+        const getClientById = async (clientId) => {
+            const response = await axios.get(`${endpoint}/clients/${clientId}`)
             setNom(response.data.nom)
             setPrenom(response.data.prenom)
             setAdresse(response.data.adresse)
             setTelephone(response.data.telephone)
             setMail(response.data.mail)
         }
-        getClientById()
-    }, [id] )
+        getClientById(clientId)
+    }, [clientId] )
 
     return (
         <div>
             <h3>Editer les client</h3>
-            <form onSubmit={update}>
+            <form onSubmit={(e)=>updateClient(e,clientId)}>
                 <div className='mb-3'>
                     <label className='form-label'></label>
                     <input 
@@ -93,4 +91,4 @@ const EditClient = () => {
     )
 }
 
-export default EditClient*/
+export default EditClient
